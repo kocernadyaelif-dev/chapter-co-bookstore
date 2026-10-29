@@ -1,0 +1,29 @@
+test_bad_json_content_type_and_methods (test_shop.ShopTests.test_bad_json_content_type_and_methods) ... ok
+test_catalogue_seed_and_categories (test_shop.ShopTests.test_catalogue_seed_and_categories) ... ok
+test_changed_price_uses_current_db_and_preserves_snapshot (test_shop.ShopTests.test_changed_price_uses_current_db_and_preserves_snapshot) ... ok
+test_concurrent_orders_cannot_oversell (test_shop.ShopTests.test_concurrent_orders_cannot_oversell) ... ok
+test_cookie_and_security_headers (test_shop.ShopTests.test_cookie_and_security_headers) ... ok
+test_csrf_protects_every_mutation (test_shop.ShopTests.test_csrf_protects_every_mutation) ... ok
+test_data_persists_after_app_restart (test_shop.ShopTests.test_data_persists_after_app_restart) ... ok
+test_duplicate_add_merges_and_totals (test_shop.ShopTests.test_duplicate_add_merges_and_totals) ... ok
+test_empty_checkout (test_shop.ShopTests.test_empty_checkout) ... ok
+test_expired_session_is_replaced (test_shop.ShopTests.test_expired_session_is_replaced) ... ok
+test_invalid_checkout_keeps_cart (test_shop.ShopTests.test_invalid_checkout_keeps_cart) ... ok
+test_invalid_quantities_and_ids (test_shop.ShopTests.test_invalid_quantities_and_ids) ... ok
+test_order_access_requires_owner_session (test_shop.ShopTests.test_order_access_requires_owner_session) ... ok
+test_out_of_stock_and_limit (test_shop.ShopTests.test_out_of_stock_and_limit) ... ok
+test_product_detail_and_missing_product (test_shop.ShopTests.test_product_detail_and_missing_product) ... ok
+test_quantity_update_remove (test_shop.ShopTests.test_quantity_update_remove) ... ok
+test_repeated_checkout_is_idempotent (test_shop.ShopTests.test_repeated_checkout_is_idempotent) ... ok
+test_search_author_and_category (test_shop.ShopTests.test_search_author_and_category) ... ok
+test_server_ignores_forged_price_and_total (test_shop.ShopTests.test_server_ignores_forged_price_and_total) ... ok
+test_sessions_are_isolated (test_shop.ShopTests.test_sessions_are_isolated) ... ok
+test_sql_injection_and_literal_wildcard (test_shop.ShopTests.test_sql_injection_and_literal_wildcard) ... ok
+test_static_files_and_traversal (test_shop.ShopTests.test_static_files_and_traversal) ... ok
+test_stock_change_rolls_back_entire_checkout (test_shop.ShopTests.test_stock_change_rolls_back_entire_checkout) ... ok
+test_success_stores_items_decrements_stock_and_clears_cart (test_shop.ShopTests.test_success_stores_items_decrements_stock_and_clears_cart) ... ok
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.055s
+
+OK

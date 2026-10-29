@@ -1,0 +1,13 @@
+INSERT OR IGNORE INTO products VALUES
+(1,'The Quiet Atlas','Mira Lane','Fiction','A cartographer returns to a coastal town and finds a map of the places she has forgotten. A gentle story about belonging, memory and choosing a new direction.',1890,24,'/assets/book-1.svg'),
+(2,'A Field Guide to Wonder','Elias Reed','Nature','Small observations from forests, shorelines and city gardens. An illustrated invitation to slow down and notice the living world close to home.',2450,18,'/assets/book-2.svg'),
+(3,'Objects of Everyday Life','Nora Vale','Design','An exploration of useful things and the decisions behind them. Learn how material, proportion and small details shape the objects we live with.',2990,12,'/assets/book-3.svg'),
+(4,'The Long Way Home','Ada Stone','Fiction','Two strangers share a train journey across a changing landscape. Their conversation becomes a story of friendship, second chances and unexpected courage.',1690,30,'/assets/book-4.svg'),
+(5,'Making Space','June Park','Design','Thoughtful interiors for ordinary homes. Practical ideas for light, colour, storage and a room that makes space for the people who use it.',2790,15,'/assets/book-5.svg'),
+(6,'Beneath the Canopy','Lea Moss','Nature','A journey through the hidden relationships of a woodland. Meet the trees, fungi and creatures that make a forest more than a collection of plants.',2290,20,'/assets/book-6.svg'),
+(7,'Small Hours','Theo North','Fiction','Twelve short stories about the moments before morning. A collection that finds warmth and humour in the lives of people whose paths briefly cross.',1590,26,'/assets/book-7.svg'),
+(8,'The Creative Practice','Sofia Finch','Design','Simple exercises for noticing, sketching and developing an idea. A companion for anyone building a creative habit, one small experiment at a time.',2490,14,'/assets/book-8.svg'),
+(9,'Walking the Coast','Iris Brook','Travel','A notebook of coastal paths and quiet villages. Essays about travelling on foot, meeting strangers and letting the weather change the plan.',2190,16,'/assets/book-9.svg'),
+(10,'A Garden in Season','Ben Alder','Nature','A seasonal notebook for curious gardeners. Explore soil, seeds and the rhythm of a small garden with practical observations for each part of the year.',2690,10,'/assets/book-10.svg'),
+(11,'Elsewhere, Slowly','Luca Grey','Travel','Letters from unhurried journeys through unfamiliar places. A reflection on attention, hospitality and how travel can change our sense of home.',1990,22,'/assets/book-11.svg'),
+(12,'Lines and Light','Cora West','Design','A visual study of composition in architecture and everyday spaces. Essays and exercises explore the relationship between line, shadow and structure.',3290,0,'/assets/book-12.svg');

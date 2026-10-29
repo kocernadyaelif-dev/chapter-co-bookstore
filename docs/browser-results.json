@@ -1,0 +1,22 @@
+{
+  "result": "PASS",
+  "desktopViewport": "1280x900",
+  "mobileViewport": "390x844",
+  "checks": [
+    "12 catalogue products",
+    "author search",
+    "category filtering",
+    "detail page",
+    "AJAX badge",
+    "duplicate add merges",
+    "quantity update",
+    "reload persistence",
+    "guest checkout form",
+    "stored order confirmation",
+    "confirmation reload",
+    "empty checkout",
+    "out-of-stock button",
+    "mobile catalogue, cart and checkout without horizontal overflow"
+  ],
+  "pageErrors": []
+}
