@@ -6,8 +6,8 @@ search/filter/sort, persistent cart and transactional simulated checkout.
 
 ## Run
 
-Install Python 3.11+ with SQLite support. Extract the ZIP and open a terminal in
-`chapter-co`. On Windows run `py app.py` (or `python app.py`). On macOS/Linux run
+Install Python 3.11+ with SQLite support. Extract the ZIP and open a terminal in the project folder.
+ On Windows run `py app.py` (or `python app.py`). On macOS/Linux run
 `python3 app.py`. Open **http://127.0.0.1:8000**. Stop with Ctrl+C.
 No application packages, credentials or external services are needed.
 Do not open index.html directly. `python app.py --port 8001` uses another port.
