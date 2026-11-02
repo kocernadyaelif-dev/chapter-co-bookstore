@@ -76,10 +76,6 @@ COOKIE_SECURE=1 enables Secure cookies for HTTPS. Sessions expire after seven da
 Clearing cookies starts a new cart and loses browser access to old confirmations.
 Expired DB rows are not automatically purged. Cart items do not reserve stock.
 
-## Portfolio and GitHub
-
-GitHubLink.txt remains marked pending until an actual repository exists. Create a
-repo in your account, upload source, verify examiner access and put its actual URL
 in that file and on slide 1. Do not submit the pending file or invent a URL.
 `python tools/set_repository.py https://github.com/OWNER/REPO` updates the link file.
 The accompanying Git bundle preserves actual build commits, not academic submissions.
@@ -89,3 +85,4 @@ two-page abstract, source ZIP and supporting records. Follow the required Phase 
 Phase 2, Phase 3 submission order and save each submitted version separately.
 Check your name/student details, personalize reflection with your actual learning,
 and record genuine tutor feedback. See docs/SUBMISSION_GUIDE.md and RESOURCES.md.
+
