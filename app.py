@@ -242,5 +242,5 @@ if __name__ == '__main__':
     parser.add_argument('--port', type=int, default=8000)
     args = parser.parse_args()
     with make_server(args.host, args.port, create_app(), server_class=ThreadedServer) as server:
-        print(f'Chapter & Co.: http://{args.host}:{args.port} (local development server)', flush=True)
+        print(f'Chapter & Co.: http://{args.host}:{server.server_port} (local development server)', flush=True)
         server.serve_forever()

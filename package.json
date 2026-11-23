@@ -2,7 +2,7 @@
   "name": "chapter-co-verification",
   "private": true,
   "scripts": {
-    "test:browser": "node tests/browser_check.mjs"
+    "test:browser": "node tests/guest_flow.mjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"
