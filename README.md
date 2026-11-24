@@ -136,7 +136,9 @@ JSON request bodies use `Content-Type: application/json`. Mutations require `X-C
 | `static/` | Browser interface, styles, JavaScript and SVG covers |
 | `sql/` | Schema and twelve reproducible seed products |
 | `tests/test_shop.py` | Database-backed API integration tests |
-| `tests/browser_check.mjs` | Optional automated browser verification |
+| `tests/guest_flow.mjs` | Complete browser journey and delayed-response regression scenarios |
+| `tests/browser_helpers.mjs` | Isolated browser-test database and temporary server port |
+| `verification/` | Phase 2 notes, recorded results and real screenshots |
 | `tools/` | Asset-generation and order-inspection helpers |
 | `package.json` | Optional browser-test dependency and command |
 | `.gitignore` | Excludes the local database, caches and dependency directories |
@@ -150,6 +152,23 @@ python -m unittest discover -s tests -v
 ```
 
 Use `python3` instead of `python` where required. The suite contains 24 integration tests using isolated temporary databases. Cases cover duplicate additions, quantity edits, session isolation, forged client prices, order ownership, persistence, price snapshots, checkout rollback, idempotent retries and competing purchases of the last copy. Run the suite against the version being assessed to obtain its current result.
+
+Optional browser verification (Node.js is needed only for these tests):
+
+```sh
+npm install
+npx playwright install chromium
+npm run test:browser
+```
+
+The suite starts its own server on an OS-selected port and uses a disposable SQLite database.
+Your normal demo can remain running; the test process and database are separate. The nine
+scenarios cover the planned guest journey, mobile layouts, delayed product responses, navigation
+while cart updates are pending and recovery after rejected edits. Results and nine screenshots
+are written to `verification/`. `tests/browser_check.mjs` remains a compatible entry point.
+For an existing Chromium installation, the optional `CHROMIUM_EXECUTABLE` environment variable
+selects its executable. See [Phase 2 development notes](verification/PHASE2_NOTES.md) for the
+implementation changes, tutor requirements and evidence.
 
 To inspect saved order items without printing customer contact details:
 

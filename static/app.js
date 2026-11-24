@@ -5,6 +5,7 @@ const currency = new Intl.NumberFormat('en-IE', { style: 'currency', currency: '
 const money = cents => currency.format(cents / 100);
 const escapeHTML = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 let csrf = '', renderVersion = 0, toastTimer;
+let cartWrite = Promise.resolve();
 
 async function api(path, method = 'GET', data) {
   const response = await fetch(path, { method, credentials: 'same-origin',
@@ -13,6 +14,21 @@ async function api(path, method = 'GET', data) {
   const payload = await response.json();
   if (!response.ok) throw new Error(payload.error || 'Something went wrong. Please try again.');
   return payload;
+}
+// Keep AJAX writes in order, including after a rejected update. Cart/checkout reads
+// wait for them so navigation cannot display a cart from before an unfinished add.
+function writeCart(path, method, data) {
+  const request = cartWrite.then(() => api(path, method, data));
+  cartWrite = request.catch(() => {});
+  return request;
+}
+async function readCart() {
+  while (true) {
+    const pending = cartWrite;
+    await pending;
+    const cart = await api('/api/cart');
+    if (pending === cartWrite) return cart;
+  }
 }
 function notify(message, failed = false) {
   const toast = document.querySelector('#toast');
@@ -54,6 +70,8 @@ async function catalog(version) {
 }
 async function detail(id, version) {
   const book = await api(`/api/products/${id}`);
+  // A late response must not bind its old product to the currently visible form.
+  if (version !== renderVersion) return;
   setPage(`<div class="wrap">${crumbs(book.category)}<section class="detail"><div class="detail-art"><img src="${escapeHTML(book.image)}" alt="${escapeHTML(book.title)} book cover" width="258" height="370"></div><div class="detail-copy"><p class="eyebrow">${escapeHTML(book.category)} / Paperback</p><h1>${escapeHTML(book.title)}</h1><p class="author">By ${escapeHTML(book.author)}</p><span class="price">${money(book.price_cents)}</span><p class="description">${escapeHTML(book.description)}</p><p class="availability">${book.stock ? `${book.stock} copies available` : 'Currently out of stock'}</p><form id="add-form" class="buy-row"><div class="field"><label for="quantity">Quantity</label><input id="quantity" type="number" min="1" max="${Math.min(book.stock,99) || 1}" value="1" required ${!book.stock ? 'disabled' : ''}></div><button class="button" ${!book.stock ? 'disabled' : ''}>Add to bag <span aria-hidden="true">+</span></button></form><div class="meta">Free demo delivery. Guest checkout.<br>This fictional book is part of our student shop.</div></div></section></div>`, version, book.title);
   document.querySelector('#add-form')?.addEventListener('submit', async e => {
     e.preventDefault();
@@ -62,12 +80,13 @@ async function detail(id, version) {
 }
 async function addBook(id, quantity, button) {
   button.disabled = true;
-  try { updateBadge(await api('/api/cart','POST',{ product_id:id, quantity })); notify('Added to your bag.'); }
+  try { updateBadge(await writeCart('/api/cart','POST',{ product_id:id, quantity })); notify('Added to your bag.'); }
   catch (error) { notify(error.message,true); }
   finally { button.disabled = false; }
 }
 async function cartPage(version) {
-  const cart = await api('/api/cart');
+  const cart = await readCart();
+  if (version !== renderVersion) return;
   updateBadge(cart);
   if (!cart.items.length) return setPage(emptyPage('Your bag is waiting.', 'A good story is only a browse away.'), version, 'Your bag');
   setPage(`<div class="wrap"><div class="page-heading"><p class="eyebrow">A few good choices</p><h1>Your book bag</h1><p>${cart.count} ${cart.count === 1 ? 'book' : 'books'}, ready for a new home.</p></div><div class="two-col"><section aria-label="Books in your bag">${cart.items.map(item => `<article class="cart-row"><a href="#product/${item.id}"><img src="${escapeHTML(item.image)}" alt="${escapeHTML(item.title)} cover"></a><div><h3><a href="#product/${item.id}">${escapeHTML(item.title)}</a></h3><p class="small">${escapeHTML(item.author)}</p><p class="small">${money(item.price_cents)} each</p><button class="remove" data-remove="${item.id}" aria-label="Remove ${escapeHTML(item.title)}">Remove</button></div><div class="field"><label for="qty-${item.id}">Quantity</label><input id="qty-${item.id}" data-quantity="${item.id}" type="number" min="1" max="${Math.min(item.stock,99) || 1}" value="${item.quantity}" aria-label="Quantity for ${escapeHTML(item.title)}"></div><div class="line-total">${money(item.subtotal_cents)}</div></article>`).join('')}<p><a class="small" href="#catalog">← Keep exploring</a></p></section>${summary(cart)}</div></div>`, version, 'Your bag');
@@ -75,13 +94,20 @@ async function cartPage(version) {
   main.querySelectorAll('[data-quantity]').forEach(input => input.addEventListener('change', () => changeCart(`/api/cart/${input.dataset.quantity}`, 'PATCH', { quantity: Number(input.value) }, input)));
 }
 async function changeCart(path, method, body, control) {
+  const version = renderVersion;
   control.disabled = true;
-  try { updateBadge(await api(path,method,body)); notify('Your bag has been updated.'); }
+  try { updateBadge(await writeCart(path,method,body)); notify('Your bag has been updated.'); }
   catch (error) { notify(error.message,true); }
-  finally { await render(false); }
+  finally {
+    control.disabled = false;
+    // Do not replace a new checkout form after the guest has left the cart.
+    if (version === renderVersion) await render(false);
+  }
 }
 async function checkout(version) {
-  const cart = await api('/api/cart');
+  const cart = await readCart();
+  if (version !== renderVersion) return;
+  updateBadge(cart);
   if (!cart.items.length) return setPage(emptyPage('Your bag is empty.', 'Add a book before starting checkout.'), version, 'Checkout');
   const field = (name,label,type,max,min,autocomplete) => `<div class="field ${name === 'address' || name === 'email' || name === 'customer_name' ? 'full' : ''}"><label for="${name}">${label}</label><input id="${name}" name="${name}" type="${type}" required minlength="${min}" maxlength="${max}" autocomplete="${autocomplete}"></div>`;
   if (!setPage(`<div class="wrap"><div class="page-heading"><p class="eyebrow">One last page</p><h1>Guest checkout</h1><p>A few details for your simulated order.</p></div><div class="two-col"><form id="checkout-form" class="checkout-form"><p class="notice full">This is a demo shop. Use fictional contact details. No payment or delivery takes place.</p>${field('customer_name','Full name','text',80,2,'name')}${field('email','Email address','email',254,5,'email')}${field('address','Street and house number','text',150,3,'street-address')}${field('postal_code','Postal code','text',16,2,'postal-code')}${field('city','Town or city','text',80,2,'address-level2')}<label class="check full"><input type="checkbox" name="acknowledge_demo" required><span>I understand that this is a simulated order and no money will be charged.</span></label><div id="form-error" class="error full" role="alert" hidden></div><button class="button full" type="submit">Place demo order <span aria-hidden="true">→</span></button><a href="#cart" class="small full">← Back to bag</a></form>${summary(cart,false)}</div></div>`, version, 'Checkout')) return;

@@ -1,0 +1,10 @@
+PASS Late product response cannot add a previously viewed book
+PASS Opening the bag waits for an unfinished AJAX add
+PASS Checkout waits for quantity updates and preserves entered fields
+PASS A rejected quantity update does not block the next valid cart write
+PASS Catalogue, author search, genre filter and both price sorts
+PASS Detail, duplicate AJAX additions, editable cart and reload persistence
+PASS Guest checkout, server-calculated order and persistent confirmation
+PASS Guest isolation, empty states, out-of-stock state and removal
+PASS Mobile catalogue, detail, cart and checkout without horizontal overflow
+9 browser scenarios passed; screenshots and results saved in verification/.

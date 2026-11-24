@@ -1,0 +1,19 @@
+{
+  "result": "PASS",
+  "checkedAt": "2026-11-23T16:00:58.661Z",
+  "desktopViewport": "1280x900",
+  "mobileViewport": "390x844",
+  "checks": [
+    "Late product response cannot add a previously viewed book",
+    "Opening the bag waits for an unfinished AJAX add",
+    "Checkout waits for quantity updates and preserves entered fields",
+    "A rejected quantity update does not block the next valid cart write",
+    "Catalogue, author search, genre filter and both price sorts",
+    "Detail, duplicate AJAX additions, editable cart and reload persistence",
+    "Guest checkout, server-calculated order and persistent confirmation",
+    "Guest isolation, empty states, out-of-stock state and removal",
+    "Mobile catalogue, detail, cart and checkout without horizontal overflow"
+  ],
+  "pageErrors": [],
+  "orderId": "CC-9718BB7989014F5C"
+}
